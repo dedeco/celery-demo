@@ -20,7 +20,6 @@ docker-compose up -d --build
 Request:
 ```
 curl --location --request GET 'http://0.0.0.0:8000/numbers?a=4&b=71'
-
 ```
 
 Response:
@@ -35,7 +34,6 @@ Response:
 Request:
 ```
 curl --location --request GET 'http://0.0.0.0:8000/tasks?task_id=dc023ce4-2a20-4c21-8078-c65a5af9515a'
-
 ```
 
 After just 1 second will be:
