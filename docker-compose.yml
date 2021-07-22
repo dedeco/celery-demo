@@ -1,0 +1,37 @@
+version: '3.8'
+services:
+  redis:
+    image: redis:alpine
+    container_name: redis
+    hostname: redis
+    ports:
+      - '6379:6379'
+  worker:
+    container_name: worker
+    build: ./src
+    hostname: worker
+    command: |
+      celery -A src.tasks.add worker -l info
+    volumes:
+      - .:/usr/src/
+    depends_on:
+      - redis
+  scheduler:
+    container_name: scheduler
+    build: ./src
+    hostname: scheduler
+    command: |
+       celery -A src.tasks.add beat
+    volumes:
+      - ./:/usr/src/
+    depends_on:
+      - redis
+  web:
+    container_name: web
+    build: ./src
+    command: |
+      gunicorn --bind 0.0.0.0:8000 'src.main:create_app()'
+    volumes:
+      - .//:/usr/src/
+    ports:
+      - "8000:8000"
